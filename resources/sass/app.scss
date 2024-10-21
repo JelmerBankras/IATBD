@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+@layer base{
+    @import "../css/generic/containers.css"
+};
+
+@layer generic{
+    @import "generic/generic.scss";
+}
+
+@layer components {
+    @import "components/button";
+    @import "components/forms";
+};
+
+.o-container {
+    @apply mx-auto px-[1.875rem];
+    @apply w-full max-w-7xl;
+  }

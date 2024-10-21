@@ -1,0 +1,14 @@
+.c-form {
+    @apply inline-flex flex-col gap-4;
+
+    &-label {
+        @apply text-black text-lg font-bold;
+    }
+    &-input {
+        @apply bg-white text-black text-sm py-2 px-2;
+
+        &__light {
+            @apply border border-gray bg-white text-black text-sm py-2 px-2;
+        }
+    }
+}
