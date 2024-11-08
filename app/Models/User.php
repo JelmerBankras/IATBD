@@ -12,20 +12,26 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    public function pets()
-    {
+    public function pets(){
         return $this->hasMany(Pet::class);
     }
 
-    public function houses()
-    {
+    public function houses(){
         return $this->hasMany(House::class);
     }
 
-    public function ownerRequests()
-    {
+    public function ownerRequests(){
         return $this->hasMany(PetRequest::class, 'owner_id');
     }
+
+    public function receivedReviews(){
+        return $this->hasMany(Review::class, 'sitter_id');
+    }
+
+    public function writtenReviews(){
+        return $this->hasMany(Review::class, 'owner_id');
+    }
+
 
 
     /**

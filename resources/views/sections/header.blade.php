@@ -7,33 +7,13 @@
             <nav id="navigation" class="flex flex-col fixed top-0 right-0 z-40 translate-x-full ml-auto w-[450px] max-w-full h-full bg-white pt-24 lg:pt-0 lg:bg-transparent lg:translate-x-0 lg:min-h-0 lg:w-auto lg:h-auto lg:static ">
                 <div class="overflow-x-hidden overflow-y-auto w-full h-full px-8 lg:px-0">
                     <ul class="flex flex-col gap-6 lg:flex-row lg:justify-center">
-                        @for ($i = 0; $i < 5; $i++)
-                            <li>
-                                    @if ($i === 0)
-                                        <a href="nav" class="block leading-7 text-white text-xl font-bold underline-offset-[.35em] decoration-1 hover:underline focus:outline-0 transition-colors lg:text-body">
-                                            Home
-                                        </a>
-                                    @elseif ($i === 1)
-                                        <a href="nav" class="block leading-7 text-white text-xl font-bold underline-offset-[.35em] decoration-1 hover:underline focus:outline-0 transition-colors lg:text-body">
-                                            About
-                                        </a>
-                                    @elseif ($i === 2)
-                                        <a href="nav" class="block leading-7 text-white text-xl font-bold underline-offset-[.35em] decoration-1 hover:underline focus:outline-0 transition-colors lg:text-body">
-                                            Services
-                                        </a>
-                                    @elseif ($i === 3)
-                                        <a href="nav" class="block leading-7 text-white text-xl font-bold underline-offset-[.35em] decoration-1 hover:underline focus:outline-0 transition-colors lg:text-body">
-                                            Blog
-                                        </a>
-                                    @elseif ($i === 4)
-                                        @if(auth()->check())
-                                            <a href="{{ route('profile') }}" class="block leading-7 text-white text-xl font-bold underline-offset-[.35em] decoration-1 hover:underline focus:outline-0 transition-colors lg:text-body">
-                                                My profile
-                                            </a>
-                                        @endif
-                                    @endif
-                            </li>
-                        @endfor
+                        <li>
+                            @if(auth()->check())
+                                <a href="{{ route('profile') }}" class="block leading-7 text-white text-xl font-bold underline-offset-[.35em] decoration-1 hover:underline focus:outline-0 transition-colors lg:text-body">
+                                    My profile
+                                </a>
+                            @endif
+                        </li>
                     </ul>
                 </div>
             </nav>

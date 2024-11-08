@@ -9,17 +9,18 @@
             <p class="text-base text-gray-700">Uurtarief: €{{ $hourlyrate }}</p>
             @endif
             @if($startdate && $enddate)
-            <div class="flex flex-row gap-2">
-                <p class="text-base text-gray-700">Beschikbaar van <p class="underline text-base text-gray-700">{{ $startdate }}</p> tot <p class="underline text-base text-gray-700">{{ $enddate }}</p></p>
-            </div>
+                <div class="flex flex-row gap-2">
+                    <p class="text-base text-gray-700">Beschikbaar van <p class="underline text-base text-gray-700">{{ $startdate }}</p> tot <p class="underline text-base text-gray-700">{{ $enddate }}</p></p>
+                </div>
             @endif
         </div>
-        @if(Auth::id() != $userid)
+        @if(Auth::check() && Auth::id() != $userid)
             <form action="{{ route('pets.requestSitting', $id) }}" method="POST">
                 @csrf
-                <button type="submit" class="c-btn c-btn-primary">Stuur Aanvraag</button>
+                <button type="submit" class="c-btn c-btn-primary my-4">Stuur Aanvraag</button>
             </form>
         @endif
+
         @if(auth()->check() && auth()->user()->id == $userid)
             <div class="flex flex-row gap-4 items-center my-4">
                 <a href="{{ route('pets.edit', $id) }}" class="underline">Edit</a>

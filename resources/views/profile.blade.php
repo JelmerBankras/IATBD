@@ -16,33 +16,33 @@
 <div class="o-container">
     <div class="my-16">
         <h1 class="text-xl text-black">Welcome, {{ auth()->user()->name }}</h1>
-        <h1 class="text-xl text-gradient">Jouw aanvragen</h1>
-        <div class="grid grid-cols-3 gap-8">
-            @foreach($ownerRequests as $request)
-                <div class="flex flex-col p-6 shadow-md">
-                    <p class="text-xl text-gradient">{{ $request->pet->name }}</p>
-                    <p>door</p>
-                    <p class="underline">{{ $request->sitter->name }}</p>
-                    <div class="flex flex-row gap-2 my-2">
-                        @if($request->status === 'pending')
-                            <form action="{{ route('requests.update', $request->id) }}" method="POST" style="display: inline;">
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" name="status" value="accepted">
-                                <button type="submit" class="c-btn c-btn-success c-btn-small">Accepteren</button>
-                            </form>
+            <h1 class="text-xl text-gradient">Jouw aanvragen</h1>
+            <div class="grid grid-cols-3 gap-8">
+                @foreach($ownerRequests as $request)
+                    <div class="flex flex-col p-6 shadow-md">
+                        <p class="text-xl text-gradient">{{ $request->pet->name }}</p>
+                        <p>door</p>
+                        <p class="underline">{{ $request->sitter->name }}</p>
+                        <div class="flex flex-row gap-2 my-2">
+                            @if($request->status === 'pending')
+                                <form action="{{ route('requests.update', $request->id) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" name="status" value="accepted">
+                                    <button type="submit" class="c-btn c-btn-success c-btn-small">Accepteren</button>
+                                </form>
 
-                            <form action="{{ route('requests.update', $request->id) }}" method="POST" style="display: inline;">
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" name="status" value="rejected">
-                                <button type="submit" class="c-btn c-btn-danger c-btn-small">Weigeren</button>
-                            </form>
-                        @endif
+                                <form action="{{ route('requests.update', $request->id) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" name="status" value="rejected">
+                                    <button type="submit" class="c-btn c-btn-danger c-btn-small">Weigeren</button>
+                                </form>
+                            @endif
+                        </div>
                     </div>
-                </div>
-            @endforeach
-        </div>
+                @endforeach
+            </div>
         <div class="my-8">
             @if(auth()->user()->role == 'owner')
                 @if($pets->isEmpty())
@@ -78,5 +78,43 @@
                 @endif
             @endif
         </div>
+        @if( auth()->user()->role == 'owner')
+            <div class="my-8">
+                @if($ownerRequests)
+                    <div class="p-8 bg-gray-100">
+                        <h2 class="text-xl text-gradient">Laat een review achter</h2>
+                        <form action="{{ route('reviews.store', $sitterId) }}" method="POST" class="flex flex-col gap-4">
+                            @csrf
+                            <label for="rating">Rating( 1-10 ):</label>
+                            <input type="number" name="rating" min="1" max="5" class="border border-1 border-gray-300" required>
+                            <label for="comment">Comment:</label>
+                            <textarea name="comment" class="border border-1 border-gray-300 max-h-[300px] h-full"></textarea>
+                            <button class="c-btn c-btn-primary" type="submit">Submit Review</button>
+                        </form>
+                    </div>
+                @endif
+            </div>
+        @endif
+        @if((auth()->user()->role == 'sitter'))
+            <div class="my-8">
+                @if($reviews && $reviews->count() > 0)
+                    <h2 class="text-2xl text-gradient pb-4">Reviews:</h2>
+                    <div class="grid grid-cols-4 gap-4">
+                        @foreach($reviews as $review)
+                            <div class="flex flex-col gap-4 p-4 shadow-md bg-blue-200 rounded-md">
+                                <p><strong>Rating:</strong> {{ $review->rating }}/5</p>
+                                <p><strong>Comment:</strong> {{ $review->comment }}</p>
+                                @php
+                                    $owner = App\Models\User::find($review->owner_id); // Haalt de eigenaar op via de owner_id
+                                @endphp
+                                <p><strong>From:</strong> {{ $owner->name }}</p> <!-- owner is een relatie in het Review model -->
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <p>No reviews available yet.</p>
+                @endif
+            </div>
+        @endif
     </div>
 </div>
