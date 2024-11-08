@@ -137,9 +137,9 @@
                 <label for="species" class="block text-lg font-medium">Filter op diersoort:</label>
                 <select name="species" id="species" class="border rounded p-2">
                     <option value="species">Alle soorten</option>
-                        {{-- @foreach($speciesList as $species)
+                        @foreach($speciesList as $species)
                             <option value="{{ $species }}">{{ ucfirst($species) }}</option>
-                        @endforeach --}}
+                        @endforeach
                 </select>
             </div>
 

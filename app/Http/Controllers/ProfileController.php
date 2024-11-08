@@ -17,19 +17,17 @@ class ProfileController extends Controller
         $ownerRequests = $user->ownerRequests;
 
         $lastPetRequest = PetRequest::where('owner_id', $user->id)
-            ->latest('updated_at') // Haalt het laatste geüpdatete record
-            ->first(); // Haalt het eerste record (de laatste geüpdatete aanvraag)
-
+            ->latest('updated_at')
+            ->first();
 
         $sitterId = $lastPetRequest ? $lastPetRequest->sitter_id : '0';
 
         if ($user->role === 'sitter') {
             $reviews = Review::where('sitter_id', $user->id)->get();
         } else {
-            $reviews = null; // Of een andere logica voor andere rollen
+            $reviews = null;
         }
 
-        // Pass the data to the view
         return view('profile', compact('user', 'pets', 'houseImages', 'ownerRequests', 'sitterId', 'reviews'));
     }
 }

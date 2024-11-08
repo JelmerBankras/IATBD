@@ -105,9 +105,9 @@
                                 <p><strong>Rating:</strong> {{ $review->rating }}/5</p>
                                 <p><strong>Comment:</strong> {{ $review->comment }}</p>
                                 @php
-                                    $owner = App\Models\User::find($review->owner_id); // Haalt de eigenaar op via de owner_id
+                                    $owner = App\Models\User::find($review->owner_id);
                                 @endphp
-                                <p><strong>From:</strong> {{ $owner->name }}</p> <!-- owner is een relatie in het Review model -->
+                                <p><strong>From:</strong> {{ $owner->name }}</p>
                             </div>
                         @endforeach
                     </div>

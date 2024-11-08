@@ -7,11 +7,6 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -31,7 +26,6 @@ class HomeController extends Controller
 
         $pets = $query->get();
 
-        // Controleer of het een AJAX-request is
         if ($request->ajax()) {
             return response()->json([
                 'pets' => $pets

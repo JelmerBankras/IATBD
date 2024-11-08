@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Review;
-use App\Models\PetRequest; // Zorg ervoor dat je het juiste model importeert
+use App\Models\PetRequest;
 
 class ReviewController extends Controller
 {
@@ -16,18 +16,15 @@ class ReviewController extends Controller
             'comment' => 'nullable|string|max:1000',
         ]);
 
-        // Controleer of de aanvrager bevoegd is om een review te plaatsen
         $acceptedRequest = PetRequest::where('owner_id', Auth::id())
                                       ->where('sitter_id', $sitterId)
                                       ->where('status', 'accepted')
                                       ->first();
 
-        // Als er geen geaccepteerde aanvraag wordt gevonden, kan de eigenaar geen review plaatsen
         if (!$acceptedRequest) {
             return redirect()->back()->with('error', 'You are not authorized to review this sitter.');
         }
 
-        // Maak de review aan
         Review::create([
             'request_id' => $acceptedRequest->id,
             'owner_id' => Auth::id(),
@@ -36,7 +33,6 @@ class ReviewController extends Controller
             'comment' => $request->comment,
         ]);
 
-        // Redirect naar het profiel met een succesmelding
         return redirect()->route('profile')->with('success', 'Review added successfully!');
     }
 }

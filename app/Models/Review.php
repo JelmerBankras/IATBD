@@ -9,7 +9,6 @@ class Review extends Model
 {
     use HasFactory;
 
-    // Voeg request_id toe aan de fillable array
     protected $fillable = [
         'request_id',
         'owner_id',

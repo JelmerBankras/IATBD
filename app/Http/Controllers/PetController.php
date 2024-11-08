@@ -9,10 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class PetController extends Controller
 {
-    // Store the new pet in the database
     public function store(Request $request)
     {
-        // Validate the incoming data
         $request->validate([
             'name' => 'required|string|max:255',
             'species' => 'required|string|max:255',
@@ -23,25 +21,22 @@ class PetController extends Controller
             'hourly_rate' => 'nullable|numeric|min:0',
         ]);
 
-        $userId = Auth::id(); // This will return the authenticated user's ID or null
+        $userId = Auth::id();
 
-        // Create and store a new pet in the database
         Pet::create([
             'name' => $request->name,
             'species' => $request->species,
             'age' => $request->age,
             'image' => $request->file('image')->store('images', 'public'),
-            'user_id' => $userId,  // Assuming the user is authenticated
+            'user_id' => $userId,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'hourly_rate' => $request->hourly_rate,
         ]);
 
-        // Redirect or return a response
         return redirect()->route('add-pet')->with('success', 'Pet added successfully!');
     }
 
-    // Show the edit form for a pet
     public function edit($id)
     {
         $pet = Pet::findOrFail($id);
@@ -54,17 +49,14 @@ class PetController extends Controller
         return view('pets.edit', compact('pet'));
     }
 
-    // Update a pet in the database
     public function update(Request $request, $id)
     {
         $pet = Pet::findOrFail($id);
 
-        // Check if the logged-in user is the owner of the pet
         if (Auth::id() !== $pet->user_id) {
-            abort(403);  // Deny access
+            abort(403);
         }
 
-        // Validate the incoming data
         $request->validate([
             'name' => 'required|string|max:255',
             'species' => 'required|string|max:255',
@@ -75,7 +67,6 @@ class PetController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Update pet details
         $pet->update([
             'name' => $request->name,
             'species' => $request->species,
@@ -85,7 +76,6 @@ class PetController extends Controller
             'hourly_rate' => $request->hourly_rate,
         ]);
 
-        // Check if an image was uploaded
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('images', 'public');
             $pet->update(['image' => $imagePath]);
@@ -94,7 +84,6 @@ class PetController extends Controller
         return redirect()->route('profile')->with('success', 'Pet updated successfully!');
     }
 
-    // Delete a pet from the database
     public function destroy($id)
     {
         $pet = Pet::findOrFail($id);
@@ -113,12 +102,10 @@ class PetController extends Controller
     {
         $pet = Pet::findOrFail($petId);
 
-        // Check of de gebruiker niet de eigenaar van het huisdier is
         if (Auth::id() === $pet->user_id) {
             return redirect()->back()->with('error', 'Je kunt geen aanvraag indienen voor je eigen huisdier.');
         }
 
-        // Maak een nieuwe aanvraag aan
         PetRequest::create([
             'pet_id' => $pet->id,
             'sitter_id' => Auth::id(),
