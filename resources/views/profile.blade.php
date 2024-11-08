@@ -16,6 +16,33 @@
 <div class="o-container">
     <div class="my-16">
         <h1 class="text-xl text-black">Welcome, {{ auth()->user()->name }}</h1>
+        <h1 class="text-xl text-gradient">Jouw aanvragen</h1>
+        <div class="grid grid-cols-3 gap-8">
+            @foreach($ownerRequests as $request)
+                <div class="flex flex-col p-6 shadow-md">
+                    <p class="text-xl text-gradient">{{ $request->pet->name }}</p>
+                    <p>door</p>
+                    <p class="underline">{{ $request->sitter->name }}</p>
+                    <div class="flex flex-row gap-2 my-2">
+                        @if($request->status === 'pending')
+                            <form action="{{ route('requests.update', $request->id) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="status" value="accepted">
+                                <button type="submit" class="c-btn c-btn-success c-btn-small">Accepteren</button>
+                            </form>
+
+                            <form action="{{ route('requests.update', $request->id) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="status" value="rejected">
+                                <button type="submit" class="c-btn c-btn-danger c-btn-small">Weigeren</button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+        </div>
         <div class="my-8">
             @if(auth()->user()->role == 'owner')
                 @if($pets->isEmpty())
@@ -24,7 +51,17 @@
                     <h1 class="text-5xl font-bold text-gradient">Jouw huisdieren</h1>
                     <div class="grid grid-cols-3 gap-4 my-16">
                         @foreach($pets as $pet)
-                            <x-pet-card id="{{ $pet->id }}" image="{{ $pet->image }}" name="{{ $pet->name }}" age="{{ $pet->age }}" type="{{ $pet->species }}" added="{{ $pet->created_at->format('d F, H:i:s') }}" updated="{{ $pet->updated_at->format('d F, H:i:s') }}" />
+                            <x-pet-card
+                                id="{{ $pet->id }}"
+                                image="{{ $pet->image }}"
+                                name="{{ $pet->name }}"
+                                age="{{ $pet->age }}"
+                                type="{{ $pet->species }}"
+                                startdate="{{ $pet->start_date }}"
+                                enddate="{{ $pet->end_date }}"
+                                hourlyrate="{{ $pet->hourly_rate }}"
+                                userid="{{ $pet->user_id }}"
+                            />
                         @endforeach
                     </div>
                 @endif

@@ -18,6 +18,16 @@
       @apply text-sm;
     }
 
+    &-success {
+        @apply text-white font-bold;
+        @apply bg-green-600;
+    }
+
+    &-danger {
+        @apply text-white font-bold;
+        @apply bg-red-600;
+    }
+
     /* primary */
     &-primary {
       @apply text-white font-bold;

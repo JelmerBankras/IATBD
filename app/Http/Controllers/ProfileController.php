@@ -6,16 +6,16 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
-    public function show()
-    {
-        // Get the authenticated user
+    public function show(){
         $user = Auth::user();
 
-        // Fetch pets and houses associated with the authenticated user
-        $pets = $user->pets;    // Assuming there is a 'pets' relationship in User model
-        $houseImages = $user->houses; // Assuming there is a 'houses' relationship in User model
+        $pets = $user->pets;
+        $houseImages = $user->houses;
+
+        $ownerRequests = $user->ownerRequests;
+
 
         // Pass the data to the view
-        return view('profile', compact('user', 'pets', 'houseImages'));
+        return view('profile', compact('user', 'pets', 'houseImages', 'ownerRequests'));
     }
 }

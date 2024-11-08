@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pet;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -16,13 +17,27 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
+
+        $pets = Pet::all();
+
+        $speciesList = Pet::select('species')->distinct()->pluck('species');
+        $query = Pet::query();
+
+        if ($request->ajax() && $request->has('species') && $request->species) {
+            $query->where('species', $request->species);
+        }
+
+        $pets = $query->get();
+
+        // Controleer of het een AJAX-request is
+        if ($request->ajax()) {
+            return response()->json([
+                'pets' => $pets
+            ]);
+        }
+
+        return view('home', compact('pets', 'speciesList'));
     }
 }

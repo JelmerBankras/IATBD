@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SitterController;
+use App\Http\Controllers\RequestController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Pet;
 
@@ -31,3 +32,8 @@ Route::post('/upload-house-images', [SitterController::class, 'uploadHouseImages
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::post('/pets/store', [PetController::class, 'store'])->name('pets.store');
+
+Route::post('/pets/{pet}/request-sitting', [PetController::class, 'requestSitting'])->name('pets.requestSitting');
+Route::put('/requests/{request}', [RequestController::class, 'update'])->name('requests.update');
+
+
