@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\PetRequest;
 use App\Models\Pet;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PetController extends Controller
 {
     // Store the new pet in the database
-    public function store(PetRequest $request)
+    public function store(Request $request)
     {
         // Validate the incoming data
         $request->validate([
@@ -54,7 +55,7 @@ class PetController extends Controller
     }
 
     // Update a pet in the database
-    public function update(PetRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $pet = Pet::findOrFail($id);
 

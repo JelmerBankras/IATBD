@@ -85,7 +85,7 @@
                         <h2 class="text-xl text-gradient">Laat een review achter</h2>
                         <form action="{{ route('reviews.store', $sitterId) }}" method="POST" class="flex flex-col gap-4">
                             @csrf
-                            <label for="rating">Rating( 1-10 ):</label>
+                            <label for="rating">Rating( 1-5 ):</label>
                             <input type="number" name="rating" min="1" max="5" class="border border-1 border-gray-300" required>
                             <label for="comment">Comment:</label>
                             <textarea name="comment" class="border border-1 border-gray-300 max-h-[300px] h-full"></textarea>
